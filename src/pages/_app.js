@@ -44,9 +44,7 @@ function MyApp({ Component, pageProps: { session, pageProps } }) {
   return (
     <SessionProvider session={session}>
       <NextUIProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </NextUIProvider>
     </SessionProvider>
   )
