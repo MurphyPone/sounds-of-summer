@@ -1,8 +1,8 @@
 import React from 'react'
 import { styled, Navbar, Text } from '@nextui-org/react'
 import { useRouter } from 'next/router'
-import { useSession } from '@supabase/auth-helpers-react'
-import { admins } from '../components/Administration'
+// import { useSession } from '@supabase/auth-helpers-react'
+import { useSession } from 'next-auth/react'
 export const Box = styled('div', {
   boxSizing: 'border-box',
 })
@@ -15,26 +15,23 @@ export default function MyNavBar() {
   const session = useSession()
   const { asPath } = useRouter()
 
-  const tabs = [
-    {
-      route: '/how-it-works',
-      display: 'How it Works',
-      isActive: false,
-    },
+  // tabs to only be displayed if auth'd
+  const authedTabs = [
     {
       route: '/submission',
       display: 'Submission',
-      isActive: false,
     },
     {
       route: '/round-one',
       display: 'Round 1',
-      isActive: false,
     },
     {
       route: '/round-two',
       display: 'Round 2',
-      isActive: false,
+    },
+    {
+      route: '/results',
+      display: 'Results',
     },
   ]
 
@@ -47,30 +44,35 @@ export default function MyNavBar() {
           </Text>
         </Navbar.Brand>
         <Navbar.Content hideIn="xs">
-          {tabs.map((item, i) => (
-            <Navbar.Link
-              isActive={asPath == item.route}
-              href={item.route}
-              key={i}
-            >
-              {item.display}
-            </Navbar.Link>
-          ))}
-
-          {/* <Navbar.Link isActive href="/how-it-works">
-            How It Works
+          {/* Always display how it works */}
+          <Navbar.Link
+            isActive={asPath == '/how-it-works'}
+            href="/how-it-works"
+            key="how-it-works"
+          >
+            How it Works
           </Navbar.Link>
-          <Navbar.Link href="/submission">Submission</Navbar.Link>
-          <Navbar.Link href="/round-one">Round 1</Navbar.Link>
-          <Navbar.Link href="/round-two">Round 2</Navbar.Link> */}
-          {/* TODO: only display the admin zone if user is admin */}
-          {session && admins.includes(session.user.email) ? (
-            <Navbar.Link isActive={asPath == '/admin'} href="/admin">
-              Admin Zone
-            </Navbar.Link>
+
+          {/* Display the auth'd tabs */}
+          {session.status == 'authenticated' ? (
+            <>
+              {authedTabs.map((curr, i) => (
+                <Navbar.Link
+                  isActive={asPath == curr.route}
+                  href={curr.route}
+                  key={i}
+                >
+                  {curr.display}
+                </Navbar.Link>
+              ))}
+            </>
           ) : (
             <></>
           )}
+          {/* Always show account option to login */}
+          <Navbar.Link isActive={asPath == '/'} href="/" key="index">
+            Account
+          </Navbar.Link>
         </Navbar.Content>
       </Navbar>
     </NavLayout>

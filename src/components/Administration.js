@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-  Container,
-  Text,
-  Row,
-  Input,
-  useTheme,
-  Spacer,
-} from '@nextui-org/react'
+import { Container, Text, Row, useTheme, Spacer } from '@nextui-org/react'
 
 const { draftSettings } = require('../../package.json')
 export const admins = ['petersmurphy7@yahoo.com']

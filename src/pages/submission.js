@@ -1,16 +1,8 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import {
-  Container,
-  Row,
-  Spacer,
-  Button,
-  Input,
-  Text,
-  Progress,
-  Grid,
-} from '@nextui-org/react'
+// import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSession, signIn, signOut } from 'next-auth/react'
+import { Container, Row, Spacer, Button, Input } from '@nextui-org/react'
 import MyNavBar from '../components/MyNavBar'
 import ProgressBar from '../components/ProgressBar'
 import Batch from '../components/Batch'
@@ -19,7 +11,7 @@ const { draftSettings } = require('../../package.json')
 
 const Submission = () => {
   const session = useSession()
-  const supabase = useSupabaseClient()
+  // const supabase = useSupabaseClient()
 
   // TODO: move this to a BE function
   const openDate = new Date(draftSettings.schedule.open)

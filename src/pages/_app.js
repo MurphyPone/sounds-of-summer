@@ -1,9 +1,10 @@
 import '../styles/globals.css'
 import { createTheme, NextUIProvider } from '@nextui-org/react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
+// import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { SessionProvider } from 'next-auth/react'
+
 import { useState } from 'react'
-import MyNavBar from '@/components/MyNavBar'
 import Layout from '@/components/Layout'
 
 // 2. Call `createTheme` and pass your custom values
@@ -37,20 +38,17 @@ const theme = createTheme({
   },
 })
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, pageProps } }) {
   const [supabase] = useState(() => createBrowserSupabaseClient())
 
   return (
-    <SessionContextProvider
-      supabaseClient={supabase}
-      initialSession={pageProps.initialSession}
-    >
+    <SessionProvider session={session}>
       <NextUIProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </NextUIProvider>
-    </SessionContextProvider>
+    </SessionProvider>
   )
 }
 export default MyApp
