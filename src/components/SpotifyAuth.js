@@ -101,7 +101,7 @@ const SpotifyAuth = ({ session }) => {
       )}
 
       {songs ? (
-        songs.map((curr, i) => <Text>{curr.track.name}</Text>)
+        songs.map((curr, i) => <Text key={i}>{curr.track.name}</Text>)
       ) : (
         <Text>no songs</Text>
       )}
