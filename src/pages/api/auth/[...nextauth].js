@@ -12,6 +12,7 @@ export const authOptions = {
   theme: {
     colorScheme: 'dark',
   },
+  secret: process.env.SPOTIFY_CLIENT_SECRET,
   // callbacks: {
   //   session: async (session, user) => {
   //     if (session?.user) {
