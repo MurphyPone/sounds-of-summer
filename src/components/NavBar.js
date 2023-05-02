@@ -47,7 +47,9 @@ export default function NavBar({ session }) {
     <Layout>
       <Navbar variant={'floating'} id={'poo'}>
         <Navbar.Brand>
-          <Navbar.Toggle aria-label="toggle navigation" />
+          <AuthFilter>
+            <Navbar.Toggle aria-label="toggle navigation" />
+          </AuthFilter>
           <Text b>Sounds of Summer</Text>
         </Navbar.Brand>
         <Navbar.Content variant="underline">
@@ -64,7 +66,7 @@ export default function NavBar({ session }) {
         <AuthFilter>
           <Navbar.Collapse>
             {authedTabs.map((curr, i) => (
-              // Only display the relevant tabs
+              // Only display the relevant tabs in terms of calendar
               <CalendarFilter date={curr.openDate} debug={true} key={i}>
                 <Row key={i}>
                   <Navbar.CollapseItem
@@ -78,13 +80,13 @@ export default function NavBar({ session }) {
                 </Row>
               </CalendarFilter>
             ))}
-
-            {/* TODO: probably always want to show results behind the calendar filter */}
           </Navbar.Collapse>
         </AuthFilter>
 
+        {/* TODO: probably always want to show results behind the calendar filter */}
+
+        {/* Always show account option to login */}
         <Navbar.Content variant="underline">
-          {/* Always show account option to login */}
           <Navbar.Item as={Link} isActive={asPath == '/'} href="/" key="index">
             Account
           </Navbar.Item>
