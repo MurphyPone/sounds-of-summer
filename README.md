@@ -2,6 +2,8 @@
 
 First, run the development server:
 
+Add the `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` to an `.env.local` file.
+
 ```bash
 npm i
 npm run dev

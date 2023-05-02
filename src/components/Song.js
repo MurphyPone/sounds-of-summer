@@ -2,7 +2,7 @@
 // voting in batch view should probably be a batch row
 
 import React from 'react'
-import { Table, Link } from '@nextui-org/react'
+import { Table, Link, Row, Text } from '@nextui-org/react'
 
 // Implied that this should be called in a BatchContainer
 // track should be some json
@@ -18,7 +18,7 @@ export default function Song({ track: {} }) {
   )
 }
 
-export function getSongAsRow({ track }) {
+export function getSongAsTableRow({ track }) {
   return (
     <Table.Row key={track.id}>
       <Table.Cell>{track.name}</Table.Cell>
@@ -27,5 +27,15 @@ export function getSongAsRow({ track }) {
       <Table.Cell>round 1 score</Table.Cell>
       <Table.Cell>current score</Table.Cell>
     </Table.Row>
+  )
+}
+
+export function getSongAsRow({ track }) {
+  return (
+    <Row key={track.id}>
+      <Text>{track.name}</Text>
+      <Text>{track?.album?.artists[0].name}</Text>
+      <Text>{track.album?.name}</Text>
+    </Row>
   )
 }

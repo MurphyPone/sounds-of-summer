@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+// import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+
 import {
   Container,
   Text,
@@ -8,14 +9,15 @@ import {
   Link,
   Spacer,
 } from '@nextui-org/react'
-import MyNavBar from '../components/MyNavBar'
+import { useSession } from 'next-auth/react'
+import NavBar from '../components/NavBar'
 import ProgressBar from '../components/ProgressBar'
 
 const { draftSettings } = require('../../package.json')
 
 const HowItWorks = () => {
   const session = useSession()
-  const supabase = useSupabaseClient()
+  // const supabase = useSupabaseClient()
 
   const now = new Date()
   const openDate = new Date(draftSettings.schedule.open)
@@ -27,7 +29,7 @@ const HowItWorks = () => {
 
   return (
     <Container>
-      <MyNavBar />
+      <NavBar session={session} />
       <Text h1 style={{ color: theme.colors.primary.value }}>
         How it Works
       </Text>
@@ -63,8 +65,8 @@ const HowItWorks = () => {
       />
       <Spacer y={2} />
       <ProgressBar
-        startDate={submissionDate}
-        endDate={roundOneDate}
+        startDate={roundOneDate}
+        endDate={roundTwoDate}
         startLabel={'round 2 voting opens'}
         endLabel={'results!'}
       />

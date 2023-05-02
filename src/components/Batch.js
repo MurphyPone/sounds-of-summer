@@ -1,10 +1,10 @@
 import React from 'react'
 import { Table, Text, Link, Row, Image, Spacer } from '@nextui-org/react'
-import Song, { getSongAsRow } from './Song'
+import Song, { getSongAsTableRow } from './Song'
 import { GetPlaylistItemsResponse } from '../sample/GetPlaylistItems-response2'
 import ReactAudioPlayer from 'react-audio-player'
 
-function msToHMS(duration) {
+export function msToHMS(duration) {
   var milliseconds = parseInt((duration % 1000) / 100),
     seconds = parseInt((duration / 1000) % 60),
     minutes = parseInt((duration / (1000 * 60)) % 60),
@@ -46,7 +46,7 @@ export default function Batch() {
       <Table.Body>
         {/* what amount of data should we pass */}
         {/* TODO: need a domain model of a song? */}
-        {/* {tracks.map((song, i) => getSongAsRow(song))} */}
+        {/* {tracks.map((song, i) => getSongAsTableRow(song))} */}
 
         {tracks.map((song, i) => (
           <Table.Row key={i}>

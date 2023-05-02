@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import React from 'react'
 import {
   Container,
   Button,
@@ -16,26 +15,28 @@ export default function Account() {
   const { theme } = useTheme()
 
   return (
-    <Container display="flex">
+    <Container>
       {session ? (
-        <>
+        <Container>
           <Row justify="center">
-            <Text h1>welcome, </Text>
+            <Text h1>welcome </Text>
+          </Row>
+          <Row justify="center">
             <Text h1 color={theme.colors.primary.value}>
-              {session.user.name}
+              {/* {console.log(session)} */}
+              {session.token.name}
             </Text>
           </Row>
           <Row justify="center">
             <Text>are you ready to motherfucking rock?</Text>
           </Row>
-          {console.log(session)}
           <Spacer y={2} />
           <Row justify="center">
             <Button size="md" onClick={() => signOut()}>
               Sign out
             </Button>
           </Row>
-        </>
+        </Container>
       ) : (
         <>
           <Spacer y={10} />

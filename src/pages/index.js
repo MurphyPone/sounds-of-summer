@@ -5,7 +5,7 @@ import { Container } from '@nextui-org/react'
 import { useSession, signIn, signOut } from 'next-auth/react'
 
 import Account from '../components/Account'
-import MyNavBar from '../components/MyNavBar'
+import NavBar from '../components/NavBar'
 
 const Home = () => {
   const session = useSession()
@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <Container>
-      <MyNavBar />
+      <NavBar session={session} />
       <Account session={session} theme={{ colorScheme: 'dark' }} />
     </Container>
   )

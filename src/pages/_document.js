@@ -14,6 +14,8 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
+        {/* TODO: probably learn about this */}
+        {/* <Head>{CssBaseline.flush()}</Head> */}
         <Head>{CssBaseline.flush()}</Head>
         <body>
           <Main />
