@@ -3,13 +3,12 @@ export default function CalendarFilter({ children, date, debug }) {
   const now = new Date()
   const openDate = new Date(date)
 
-  console.log(
-    `CalendarFilter: now ${now}, openDate ${openDate}, now > openDate: ${
-      now > openDate
-    } `
-  )
-
   if (debug) {
+    console.log(
+      `CalendarFilter: now ${now}, openDate ${openDate}, now > openDate: ${
+        now > openDate
+      } `
+    )
     return children
   }
 

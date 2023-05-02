@@ -67,7 +67,7 @@ export default function NavBar({ session }) {
           <Navbar.Collapse>
             {authedTabs.map((curr, i) => (
               // Only display the relevant tabs in terms of calendar
-              <CalendarFilter date={curr.openDate} debug={true} key={i}>
+              <CalendarFilter date={curr.openDate} debug={false} key={i}>
                 <Row key={i}>
                   <Navbar.CollapseItem
                     as={Link}

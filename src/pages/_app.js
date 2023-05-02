@@ -1,6 +1,5 @@
 // import '../styles/globals.css'
 import { createTheme, NextUIProvider } from '@nextui-org/react'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionProvider } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -44,8 +43,6 @@ const theme = createTheme({
 })
 
 function App({ Component, pageProps: { session, pageProps } }) {
-  const [supabase] = useState(() => createBrowserSupabaseClient())
-
   return (
     <SessionProvider session={session}>
       <NextUIProvider theme={theme}>

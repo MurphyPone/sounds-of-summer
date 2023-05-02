@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 // const SpotifyWebApi = require('spotify-web-api-js')
 import SpotifyWebApi from 'spotify-web-api-js/src/spotify-web-api'
 

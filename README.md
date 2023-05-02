@@ -33,6 +33,9 @@ In no particular order of priority:
 
 #### Back End
 
+- [ ] Figure out how to expose env vars to talk to the DB from the client side (I think this should work when deployed, but need to check)
+  - [ ] currently, I just prefixed all the KV stuff with `NEXT_PUBLIC_` which allegedly works, but that's sketch and exposes them clientside which is no bueno
+  - [ ] I think the long term solution is outsource the db stuff to backend Next routes, but not sure
 - [ ] If I wanted to make this flexible and easy for other people to use, the Admin zone should let an admin person configure/persist the configurable settings
 - [ ] read up on how the `/pages/api` shiz works with Next, it's pretty cool as far as I can tell
   - [ ] while none of this app is particularly compute-intensive, it might be useful to model it as BE/FE and put all the algorithmic shuffling utility functions into an route

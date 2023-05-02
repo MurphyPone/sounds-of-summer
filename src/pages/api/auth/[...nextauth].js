@@ -9,17 +9,22 @@ const scopes = [
   'user-top-read',
 ]
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (req, res) =>
   NextAuth(req, res, {
     providers: [
       SpotifyProvider({
         clientId: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        authorization: `https://accounts.spotify.com/authorize?scope=${scopes.join(
+          '%20'
+        )}`,
       }),
     ],
+
     callbacks: {
       // put the goodies from the full JWT context onto the token
-      async jwt({ token, account, profile, user }) {
+      async jwt({ token, account, profile }) {
         // Persist the OAuth access_token and or the user id to the token right after signin
         if (account) {
           token.accessToken = account.access_token

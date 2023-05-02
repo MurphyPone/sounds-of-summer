@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-// import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 
 import {
   Container,
@@ -17,7 +16,6 @@ const { draftSettings } = require('../../package.json')
 
 const HowItWorks = () => {
   const session = useSession()
-  // const supabase = useSupabaseClient()
 
   const now = new Date()
   const openDate = new Date(draftSettings.schedule.open)

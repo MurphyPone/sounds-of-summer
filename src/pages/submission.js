@@ -1,11 +1,6 @@
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-// import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-
 import {
-  styled,
   Container,
   Row,
   Spacer,
@@ -17,6 +12,7 @@ import {
   Table,
 } from '@nextui-org/react'
 import SpotifyWebApi from 'spotify-web-api-js/src/spotify-web-api'
+import kv from '@vercel/kv'
 
 import NavBar from '../components/NavBar'
 import AuthFilter from '../components/AuthFilter'
@@ -31,7 +27,7 @@ function checkSongLength(songs) {
   if (songs.tracks.items.length > draftSettings.batchSize) {
     return 'your playlist is too long btw'
   } else if (songs.tracks.items.length < draftSettings.batchSize) {
-    return 'your playlist is too long btw'
+    return 'your playlist is too short btw'
   }
   return 'nice, 25 songs'
 }
@@ -42,6 +38,15 @@ export default function Submission() {
   const [songs, setSongs] = useState()
   // I'm 100% certain that this is a react crime lol
   const [errors, setErrors] = useState([])
+
+  async function kvPush(key, data) {
+    console.log('env.process.KV_URL: ', process.env.NEXT_PUBLIC_KV_URL)
+    try {
+      await kv.set(key, data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // TODO: probably don't need the whole session
   async function getPlaylist(session) {
@@ -55,9 +60,14 @@ export default function Submission() {
       spotify.setAccessToken(token)
       await spotify.getPlaylist(playlistId).then(
         (data) => {
-          console.log(data)
+          // console.log(data)
           setSongs(data)
           setErrors(null)
+          // TODO: magic
+
+          const kvKey = `${draftSettings.currentSeason}-${session.data?.id}`
+
+          kvPush(kvKey, data)
         },
         (err) => {
           console.log('YOUR ERROR, SIRE: ', err)
@@ -77,8 +87,11 @@ export default function Submission() {
   function isValidPlaylistURL(url) {
     return (
       url.startsWith('https://open.spotify.com/playlist/') &&
-      url.length ==
-        'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69'.length
+      (url.length ==
+        'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69'.length ||
+        url.length ==
+          'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69?si=c0623ae78d0a45d5'
+            .length)
     )
   }
 
@@ -136,7 +149,7 @@ export default function Submission() {
           <Container>submit some shit</Container>
         ) : (
           <Container>
-            {checkSongLength(songs)}
+            {<Text color={'red'}>{checkSongLength(songs)}</Text>}
             <Row>
               <Text h1>{songs.name}</Text>
             </Row>
@@ -160,8 +173,9 @@ export default function Submission() {
                 {songs.tracks.items.map((curr, i) => (
                   <Table.Row key={i}>
                     <Table.Cell>
-                      <Row>
-                        <Text h3>{i}</Text>
+                      <Row justify="center">
+                        <Spacer y={1} />
+                        <Text h3>{i + 1}</Text>
                         <Image
                           src={curr.track.album.images[1].url}
                           alt={curr.track.name}
