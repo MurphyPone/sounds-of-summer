@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Container,
   Row,
@@ -12,7 +12,9 @@ import {
   Table,
 } from '@nextui-org/react'
 import SpotifyWebApi from 'spotify-web-api-js/src/spotify-web-api'
-import kv from '@vercel/kv'
+
+import GetPlaylist from '../pages/api/getPlaylist'
+import SetPlaylist from '../pages/api/setPlaylist'
 
 import NavBar from '../components/NavBar'
 import AuthFilter from '../components/AuthFilter'
@@ -20,13 +22,29 @@ import ProgressBar from '../components/ProgressBar'
 import Batch, { msToHMS } from '../components/Batch'
 import { getSongAsRow } from '../components/Song'
 
+//
+/**
+ * TODO:
+ * 1. on page load, call /api/getPlaylist
+ *  a) if not empty, render saved songs
+ *  b) otherwise render prompt for submission
+ * 2. On submit, update with /api/setPlaylist
+ */
+
 const { draftSettings } = require('../../package.json')
 const spotify = new SpotifyWebApi()
 
+const SPOTIFY_PLAYLIST_URL_PREFIX = 'https://open.spotify.com/playlist/'
+const SPOTIFY_PLAYLIST_URL_EXAMPLE_SHORT =
+  'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69'
+const SPOTIFY_PLAYLIST_URL_EXAMPLE_LONG =
+  'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69?si=c0623ae78d0a45d5'
+
+// TODO: clean this up
 function checkSongLength(songs) {
-  if (songs.tracks.items.length > draftSettings.batchSize) {
+  if (songs?.tracks?.items?.length > draftSettings.batchSize) {
     return 'your playlist is too long btw'
-  } else if (songs.tracks.items.length < draftSettings.batchSize) {
+  } else if (songs?.tracks?.items?.length < draftSettings.batchSize) {
     return 'your playlist is too short btw'
   }
   return 'nice, 25 songs'
@@ -34,40 +52,49 @@ function checkSongLength(songs) {
 
 export default function Submission() {
   const session = useSession()
+
+  // for the input component
   const [playlistInput, setPlaylistInput] = useState('')
+
+  const kvKey = `${draftSettings.currentSeason}-${session.data?.token?.id}`
+
+  // for the actual playlist data itself
   const [songs, setSongs] = useState()
+
   // I'm 100% certain that this is a react crime lol
   const [errors, setErrors] = useState([])
 
-  async function kvPush(key, data) {
-    console.log('env.process.KV_URL: ', process.env.NEXT_PUBLIC_KV_URL)
-    try {
-      await kv.set(key, data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // try to set the songs on page load
+  useEffect(() => {
+    GetPlaylist({ key: kvKey }).then((res) => {
+      if (res.status == 200) {
+        setSongs(res)
+      } else {
+      }
+    })
+  }, [kvKey])
 
-  // TODO: probably don't need the whole session
-  async function getPlaylist(session) {
+  if (!songs) return <p>loading</p>
+
+  // TODO: probably move this to a different /api/route or maybe even inside the GetPlaylist one?
+  // TODO: this is a potentially confusing name w.r.t. /api/getPlaylist
+  async function getPlaylist() {
     // check if startsWith the https thing, just take the ID
     console.log('session: ', session)
     const token = session.data?.token.accessToken
-    console.log('token in getPlaylist: ', token)
-    console.log('input: ', playlistInput)
+    // console.log('token in getPlaylist: ', token)
+    // console.log('input: ', playlistInput)
     const playlistId = chopFullURL(playlistInput)
     if (token) {
       spotify.setAccessToken(token)
       await spotify.getPlaylist(playlistId).then(
         (data) => {
           // console.log(data)
-          setSongs(data)
+          setSongs({ body: data })
           setErrors(null)
           // TODO: magic
 
-          const kvKey = `${draftSettings.currentSeason}-${session.data?.id}`
-
-          kvPush(kvKey, data)
+          SetPlaylist({ key: kvKey, payload: data })
         },
         (err) => {
           console.log('YOUR ERROR, SIRE: ', err)
@@ -86,12 +113,9 @@ export default function Submission() {
   // this is probably too dumb, but whatever
   function isValidPlaylistURL(url) {
     return (
-      url.startsWith('https://open.spotify.com/playlist/') &&
-      (url.length ==
-        'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69'.length ||
-        url.length ==
-          'https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69?si=c0623ae78d0a45d5'
-            .length)
+      url.startsWith(SPOTIFY_PLAYLIST_URL_PREFIX) &&
+      (url.length == SPOTIFY_PLAYLIST_URL_EXAMPLE_SHORT.length ||
+        url.length == SPOTIFY_PLAYLIST_URL_EXAMPLE_LONG.length)
     )
   }
 
@@ -112,7 +136,7 @@ export default function Submission() {
               color="primary"
               label={`paste the ID of your spotify playlist with ${draftSettings.batchSize} songs`}
               // labelLeft="https://open.spotify.com/playlist/"
-              placeholder="https://open.spotify.com/playlist/2utjwWZnVjfAv2Helpzz69"
+              placeholder={SPOTIFY_PLAYLIST_URL_EXAMPLE_SHORT}
               width="80%"
               size="md"
               onChange={(e) => {
@@ -143,21 +167,21 @@ export default function Submission() {
           />
         </Container>
         {/* TODO: if users playlist is present, pull it in */}
-
         {/* If results for user, then display, otherwise don't */}
-        {!songs ? (
+        {!songs.body ? ( //songs == 'empty' ?
           <Container>submit some shit</Container>
         ) : (
           <Container>
-            {<Text color={'red'}>{checkSongLength(songs)}</Text>}
+            {/* TODO: revisit this */}
+            {/* {<Text color={'red'}>{checkSongLength(songs.body)}</Text>} */}
             <Row>
-              <Text h1>{songs.name}</Text>
+              <Text h1>{songs.body.name}</Text>
             </Row>
             <Row>
-              <Text>{songs.description}</Text>
+              <Text>{songs.body.description}</Text>
             </Row>
             <Table
-              aria-label={songs.name}
+              aria-label={songs.body.name}
               css={{
                 height: 'auto',
                 minWidth: '100%',
@@ -170,7 +194,7 @@ export default function Submission() {
                 <Table.Column>Duration</Table.Column>
               </Table.Header>
               <Table.Body>
-                {songs.tracks.items.map((curr, i) => (
+                {songs?.body?.tracks?.items?.map((curr, i) => (
                   <Table.Row key={i}>
                     <Table.Cell>
                       <Row justify="center">
