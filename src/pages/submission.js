@@ -13,9 +13,6 @@ import {
 } from '@nextui-org/react'
 import SpotifyWebApi from 'spotify-web-api-js/src/spotify-web-api'
 
-import GetPlaylist from '../pages/api/getPlaylist'
-import SetPlaylist from '../pages/api/setPlaylist'
-
 import NavBar from '../components/NavBar'
 import AuthFilter from '../components/AuthFilter'
 import ProgressBar from '../components/ProgressBar'
@@ -66,12 +63,20 @@ export default function Submission() {
 
   // try to set the songs on page load
   useEffect(() => {
-    GetPlaylist({ key: kvKey }).then((res) => {
-      if (res.status == 200) {
-        setSongs(res)
-      } else {
-      }
+    fetch('/api/getPlaylist', {
+      method: 'POST',
+      body: JSON.stringify({ key: kvKey }),
     })
+      .then((res) => {
+        if (res.status == 200) {
+          return res.json()
+        }
+      })
+      .then((json) => {
+        console.log('setting songs from GetPlaylist in res: ', json)
+        setSongs(json)
+        return json
+      })
   }, [kvKey])
 
   if (!songs) return <p>loading</p>
@@ -90,11 +95,23 @@ export default function Submission() {
       await spotify.getPlaylist(playlistId).then(
         (data) => {
           // console.log(data)
-          setSongs({ body: data })
+          // setSongs(data)
+
           setErrors(null)
           // TODO: magic
 
-          SetPlaylist({ key: kvKey, payload: data })
+          fetch('/api/setPlaylist', {
+            method: 'POST',
+            body: JSON.stringify({
+              key: kvKey,
+              payload: data,
+            }),
+          }).then((res) => {
+            if (res.status == 200) {
+              setSongs(data)
+              console.log('setting songs')
+            }
+          })
         },
         (err) => {
           console.log('YOUR ERROR, SIRE: ', err)
@@ -168,20 +185,20 @@ export default function Submission() {
         </Container>
         {/* TODO: if users playlist is present, pull it in */}
         {/* If results for user, then display, otherwise don't */}
-        {!songs.body ? ( //songs == 'empty' ?
+        {!songs ? ( //songs == 'empty' ?
           <Container>submit some shit</Container>
         ) : (
           <Container>
             {/* TODO: revisit this */}
             {/* {<Text color={'red'}>{checkSongLength(songs.body)}</Text>} */}
             <Row>
-              <Text h1>{songs.body.name}</Text>
+              <Text h1>{songs.name}</Text>
             </Row>
             <Row>
-              <Text>{songs.body.description}</Text>
+              <Text>{songs.description}</Text>
             </Row>
             <Table
-              aria-label={songs.body.name}
+              aria-label={songs.name}
               css={{
                 height: 'auto',
                 minWidth: '100%',
@@ -194,7 +211,7 @@ export default function Submission() {
                 <Table.Column>Duration</Table.Column>
               </Table.Header>
               <Table.Body>
-                {songs?.body?.tracks?.items?.map((curr, i) => (
+                {songs?.tracks?.items?.map((curr, i) => (
                   <Table.Row key={i}>
                     <Table.Cell>
                       <Row justify="center">
@@ -232,3 +249,18 @@ export default function Submission() {
     </Container>
   )
 }
+
+// export async function getServerSideProps(context) {
+//   const res = await fetch(`https://...`)
+//   const data = await res.json()
+
+//   if (!data) {
+//     return {
+//       notFound: true,
+//     }
+//   }
+
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   }
+// }

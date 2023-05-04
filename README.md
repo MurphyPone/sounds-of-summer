@@ -16,6 +16,7 @@ In no particular order of priority:
 
 #### Front End 
 - [ ] consolidate the Auth vibecheck from the various pages (e.g. `/index.js` into a proper component like `Layout.js`), but think about how it needs to be applied... 
+  - [ ] Need to add all participants to spotify project
   - I think auth'd users in some allowlist should be able to vote on songs, but anyone should be able to publicly view round or final results.  So, maybe only gate the round voting tabs to auth'd users, and the final results can be public
   - [ ] Add such an allowlist to the `draftSettings` in the `package.json`
 - [ ] Round tabs

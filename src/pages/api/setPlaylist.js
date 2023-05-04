@@ -1,4 +1,8 @@
-import { createClient } from '@vercel/kv'
+import kv from '@vercel/kv'
+
+export const config = {
+  runtime: 'experimental-edge',
+}
 
 /**
  *
@@ -7,21 +11,23 @@ import { createClient } from '@vercel/kv'
  * @returns
  */
 export default async function SetPlaylist(request) {
-  const kv = createClient({
-    url: process.env.NEXT_PUBLIC_KV_REST_API_URL,
-    token: process.env.NEXT_PUBLIC_KV_REST_API_TOKEN,
-  })
+  const data = await request.json()
+  console.log(`SetPlaylist request:, { key: ${data.key}, payload: {...}`)
 
-  // TODO: this is gross and I shouldn't have to do this wtf?
-
-  console.log('SetPlaylist request:', request)
   try {
-    await kv.hset(request.key, request.payload)
-    // console.log('SetPlaylist: success for', request.key)
-    return { status: 200, body: request.key }
+    await kv.hset(data.key, data.payload)
+    console.log('SetPlaylist responding with success')
+
+    return new Response(
+      { ooga: 'booga' },
+      {
+        status: 200,
+      }
+    )
   } catch (error) {
-    const res = { body: error, status: 500 }
-    console.log('SetPlaylist: error: ', res)
-    return res
+    console.log('kv error: ', error)
+    return new Response(error.toString, {
+      status: 500,
+    })
   }
 }

@@ -1,26 +1,33 @@
-import { createClient } from '@vercel/kv'
+import kv from '@vercel/kv'
 
-const kv = createClient({
-  url: process.env.NEXT_PUBLIC_KV_REST_API_URL,
-  token: process.env.NEXT_PUBLIC_KV_REST_API_TOKEN,
-})
+export const config = {
+  runtime: 'experimental-edge',
+}
+
 /**
  *
- * @param {*} request { key: `{userId}-{season}` }
- * @param {*} response spotifyPlaylistResponse
- * @returns
+ * @param {*} request { data: { key: `{userId}-{season}` } }
+ * @returns { playlist }
  */
-export default async function GetPlaylist(request) {
+export default async function handler(request) {
+  const data = await request.json()
+  console.log('GetPlaylist request:', data)
   try {
-    const playlist = await kv.hgetall(request.key)
-    console.log('GetPlaylist responding with playlist ', playlist)
-    // if (playlist == null) return { status: 202, body: 'empty' }
-    return {
+    const playlist = await kv.hgetall(data.key)
+
+    // console.log('GetPlaylist responding with playlist ', playlist)
+    const res = new Response(JSON.stringify(playlist), {
       status: 200,
-      body: playlist,
-    }
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+    console.log('GetPlaylist responding with:', res.status)
+    return res
   } catch (error) {
     console.log('kv error: ', error)
-    return new Response({ status: 500, body: error.toString })
+    return new Response(error.toString, {
+      status: 500,
+    })
   }
 }
