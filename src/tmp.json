@@ -1,0 +1,72 @@
+{
+  cookies: RequestCookies {
+    "next-auth.csrf-token": { 
+        "name":"next-auth.csrf-token",
+        "value":"7ec92b7a71b99b0eac4e32e67a9dd7e1f5f24eefa4c893b2284a3bf6769672a8|59881d4c0c19a56a8e0632b9b1b82e829862a8a110fe8613b900d499c8f40412"
+        },
+        "next-auth.callback-url": {
+            "name":"next-auth.callback-url",
+            "value":"http://localhost:3000/"
+        },"next-auth.session-token": {
+            "name":"next-auth.session-token",
+            "value":"eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..gSoDeo_MIdOVHtmK.E5x-pE58itSDzQh_4FcRaEUKsBO6F_dBFvSsIGa2mjRvwxPQgtv526RTfJKPPiWw46yiPhNlPi16Wlc445NaoVFPtVf5ggGg3rqE39eVMaUvFN5fCKWqz9hr_Q5fk9XV2lltogZ04OgxUcDsdl0K2Wd65ZeghmaUrITAGSc4pP9SAVtNZGtPV2VSBu6a0tTl444HYeUHC_W9mISj5LPOhsBwMXA356yX56cwvMnUe7d99EL74FzTGpjt5Wual-biegD22P5wC2hmCFToKirXQY4iPA8fs0RajFI-hqgU-ujmGgCdLYC9E0PHASgL9XGk8R1lRkaEqyUMnpeuuWjFHCWq5Xj2mBOUb2Qh0lo48r684vQzI3QVdDQA4O4phYRrKAjN4PU0pSZD5Zman17-1UIKvNgDUwWbZgiYVPvBp0iHRAwg_8vMC_X_80eXK3SWnAIBtK-nYlSJ2hYVJrAlRP9z69Hb2zrT8KXHHhd856tWQ9cdhE9iIGc4XIKF8sR0SyVIM2n0KkCU2qEfIhfDSgU7M9xr_PrDq0WYDHY4-iygMM8zU0T3iSqeGjpnD27FfB5yVePP.N9swW0QsfgCV0ft7natPiw"
+        }
+    },
+  geo: {},
+  ip: undefined,
+  nextUrl: {
+    href: "http://localhost:3000/api/getPlaylist?key=2023-plotsmurphy",
+    origin: "http://localhost:3000",
+    protocol: "http:",
+    username: "",
+    password: "",
+    host: "localhost:3000",
+    hostname: "localhost",
+    port: "3000",
+    pathname: "/api/getPlaylist",
+    search: "?key=2023-plotsmurphy",
+    searchParams: URLSearchParams {  },
+    hash: ""
+    },
+  url: "http://localhost:3000/api/getPlaylist?key=2023-plotsmurphy",
+  bodyUsed: false,
+  cache: "default",
+  credentials: "same-origin",
+  destination: "",
+  headers: {
+  accept: "*/*",
+  accept-language: "en-US,en;q=0.9",
+  cache-control: "",
+  connection: "close",
+  cookie: "next-auth.csrf-token=7ec92b7a71b99b0eac4e32e67a9dd7e1f5f24eefa4c893b2284a3bf6769672a8%7C59881d4c0c19a56a8e0632b9b1b82e829862a8a110fe8613b900d499c8f40412; next-auth.callback-url=http%3A%2F%2Flocalhost%3A3000%2F; next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..gSoDeo_MIdOVHtmK.E5x-pE58itSDzQh_4FcRaEUKsBO6F_dBFvSsIGa2mjRvwxPQgtv526RTfJKPPiWw46yiPhNlPi16Wlc445NaoVFPtVf5ggGg3rqE39eVMaUvFN5fCKWqz9hr_Q5fk9XV2lltogZ04OgxUcDsdl0K2Wd65ZeghmaUrITAGSc4pP9SAVtNZGtPV2VSBu6a0tTl444HYeUHC_W9mISj5LPOhsBwMXA356yX56cwvMnUe7d99EL74FzTGpjt5Wual-biegD22P5wC2hmCFToKirXQY4iPA8fs0RajFI-hqgU-ujmGgCdLYC9E0PHASgL9XGk8R1lRkaEqyUMnpeuuWjFHCWq5Xj2mBOUb2Qh0lo48r684vQzI3QVdDQA4O4phYRrKAjN4PU0pSZD5Zman17-1UIKvNgDUwWbZgiYVPvBp0iHRAwg_8vMC_X_80eXK3SWnAIBtK-nYlSJ2hYVJrAlRP9z69Hb2zrT8KXHHhd856tWQ9cdhE9iIGc4XIKF8sR0SyVIM2n0KkCU2qEfIhfDSgU7M9xr_PrDq0WYDHY4-iygMM8zU0T3iSqeGjpnD27FfB5yVePP.N9swW0QsfgCV0ft7natPiw",
+  dnt: "1",
+  host: "localhost:3000",
+  referer: "http://localhost:3000/submission",
+  sec-ch-ua: ""Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"",
+  sec-ch-ua-mobile: "?0",
+  sec-ch-ua-platform: ""macOS"",
+  sec-fetch-dest: "empty",
+  sec-fetch-mode: "cors",
+  sec-fetch-site: "same-origin",
+  user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+  x-forwarded-for: "::1",
+  x-forwarded-host: "localhost:3000",
+  x-forwarded-port: "3000",
+  x-forwarded-proto: "http",
+  x-invoke-path: "/api/getPlaylist",
+  x-invoke-query: "%7B%22key%22%3A%222023-plotsmurphy%22%7D"
+},
+  integrity: "",
+  keepalive: false,
+  method: "GET",
+  mode: "cors",
+  redirect: "follow",
+  referrer: "about:client",
+  referrerPolicy: "",
+  signal: AbortSignal {
+    [Symbol(kAborted)]: false,
+    [Symbol(kReason)]: undefined,
+    [Symbol(kOnabort)]: undefined,
+    [Symbol(realm)]: { settingsObject: { baseUrl: undefined } }
+  }
+}

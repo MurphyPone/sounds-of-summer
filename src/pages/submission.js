@@ -63,9 +63,8 @@ export default function Submission() {
 
   // try to set the songs on page load
   useEffect(() => {
-    fetch('/api/getPlaylist', {
-      method: 'POST',
-      body: JSON.stringify({ key: kvKey }),
+    fetch('/api/getPlaylist?' + new URLSearchParams({ key: kvKey }), {
+      method: 'GET',
     })
       .then((res) => {
         if (res.status == 200) {
@@ -79,7 +78,7 @@ export default function Submission() {
       })
   }, [kvKey])
 
-  if (!songs) return <p>loading</p>
+  // if (!songs) return <p>loading</p>
 
   // TODO: probably move this to a different /api/route or maybe even inside the GetPlaylist one?
   // TODO: this is a potentially confusing name w.r.t. /api/getPlaylist

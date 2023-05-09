@@ -12,14 +12,14 @@ export const config = {
  */
 export default async function handler(request) {
   const key = request.nextUrl.searchParams.get('key')
-  console.log('getPlaylist for key: ', key)
+  console.log('getAllPlaylists for key: ', key)
   // const searchParams = new URLSearchParams(search)
   // console.log('search: ', search, 'searchParams: ', searchParams)
   // const { key } = query
   // const data = await request.json()
   // console.log('GetPlaylist request:', searchParams)
   try {
-    const playlist = await kv.hgetall(key)
+    const playlist = await kv.hgetall(key + '*')
 
     // console.log('GetPlaylist responding with playlist ', playlist)
     const res = new Response(JSON.stringify(playlist), {
@@ -28,7 +28,7 @@ export default async function handler(request) {
         'content-type': 'application/json',
       },
     })
-    console.log('GetPlaylist responding with:', res.status)
+    console.log('GetAllPlaylists responding with:', res.status)
     return res
   } catch (error) {
     console.log('kv error: ', error)

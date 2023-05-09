@@ -45,6 +45,8 @@ In no particular order of priority:
   - [ ] Autopersist current (valid) playlist submissions to database
   - [ ] (nice to have) email participants about deadlines (I'll just text em in the groupchat tho tbh...)
   - [ ] on deadlines, shuffle, tally, display results?¿ Could just do a onetime check when the site is hit e.g. 
+- [ ] Admin page
+  - [ ] To view aggregate stats about participants' submissions, shuffle, and reveal different portions 
 
 ```js 
 
